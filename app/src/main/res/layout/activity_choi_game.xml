@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bgchoigame"
+    android:layout_height="match_parent"
+    tools:context=".ChoiGame">
+
+    <ImageButton
+        android:id="@+id/imgbtchoi"
+        android:layout_width="174dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="400dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        android:src="@drawable/btchoigame" />
+    <ImageButton
+        android:layout_width="174dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        android:src="@drawable/topthanh" />
+    <ImageButton
+        android:layout_width="174dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+        android:src="@drawable/thoat" />
+
+
+</LinearLayout>
