@@ -10,25 +10,36 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class VaoChoi extends AppCompatActivity {
-    TextView tvCauHoi;
-    final String Database_Name = "da3_gameGiaiDo.db";
-    SQLiteDatabase database;
-    public String[] da;
-    public String[] ctl;
-    public customCauTraLoi customCauTraLoi;
-    public customDapAn customDapAn;
-    public GridView gridViewDapAn,gridViewCauTraLoi;
-    String correct_da;
+    public TextView tvCauHoi,tvTienNguoiDung;
+    ArrayList<String> arrDapAn;
+    GridView gvDapAn;
+
+
+    ArrayList<CauHoi> arrCauHoi;
+    CauHoi cauHoi;
+    int pos=0;
+
+    String CauTraLoi = "";
+
+    ArrayList<String> arrCauTraLoi;
+    GridView gvCauTraLoi;
+     cauHoiModel model;
+
+     Button btnGoiY;
 
 
 
@@ -37,110 +48,173 @@ public class VaoChoi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vao_choi);
         Init();
-        Events();
+        setOnclick();
+        hienCauHoi();
     }
 
-    private void Events() {
+    private void HienThiDapAn() {
+        gvDapAn.setAdapter(new DapAnAdapter(VaoChoi.this, 0, arrDapAn));
+    }
 
-        database = Database.initDatabase(VaoChoi.this, Database_Name);
-        Cursor cursor = database.rawQuery("Select * from cauhoi", null);
-        for (int i = 0; i < cursor.getCount(); i++) {
-            cursor.moveToPosition(i);
-            tvCauHoi.setText(cursor.getString(1));
-            String DapAn = cursor.getString(3).trim();
-            String CauTraLoi = cursor.getString(2).trim();
-            da = DapAn.split("");
-            ctl = CauTraLoi.split("");
-        }
-        da = shuffleArray(da);
-
+    private void HienThiCauTraLoi() {
+        gvCauTraLoi.setAdapter(new DapAnAdapter(VaoChoi.this, 0, arrCauTraLoi));
     }
 
 
-    private String[] shuffleArray(String[] ar) {
-        Random rnd = new Random();
-        for (int i = ar.length - 1; i > 0; i--) {
-            int index = rnd.nextInt(i + 1);
-            String a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
-        }
-        return ar;
+    public void setOnclick() {
+        gvCauTraLoi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = (String) adapterView.getItemAtPosition(i);
+                if (s.length() != 0 && pos < arrDapAn.size()) {
+                    for(int j=0;j<arrDapAn.size();j++){
+                        if(arrDapAn.get(j).length()==0){
+                            pos=j;
+                            break;
+                        }
+
+                    }
+                    arrCauTraLoi.set(i, "");
+                    arrDapAn.set(pos, s);
+                    pos++;
+                    HienThiCauTraLoi();
+                    HienThiDapAn();
+                    checkDapAn();
+                }
+            }
+        });
+        gvDapAn.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = (String) adapterView.getItemAtPosition(i);
+                if (s.length() != 0) {
+                    pos = i;
+                    arrDapAn.set(i, "");
+                    for (int j = 0; j < arrCauTraLoi.size(); j++) {
+                        if (arrCauTraLoi.get(j).length() == 0) {
+                            arrCauTraLoi.set(j, s);
+                            break;
+                        }
+                    }
+                    HienThiCauTraLoi();
+                    HienThiDapAn();
+
+                }
+            }
+        });
     }
-    private void setupList() {
-        Random random= new Random();
-
-        Common.user_submit_answer=new String[da.length];
-
-//        ctl.clear();
-//        for(String item : da){
-//            //add logo name to lisst
-//            ctl.add(String.valueOf(item));
-//        }
-        //random add some character to list
-        for(int i = da.length;i<da.length*2;i++){
-//            ctl.add(Common.alphabet_character[random.nextInt(Common.alphabet_character.length)]);
-
-            // sort random
-//            Collections.shuffle(suggestSource);
-
-            //set for GridView
-            customDapAn = new customDapAn(setupNullList(),this);
-            customCauTraLoi = new customCauTraLoi(ctl,this,this);
-            customDapAn.notifyDataSetChanged();
-            customCauTraLoi.notifyDataSetChanged();
-
-            gridViewCauTraLoi.setAdapter(customCauTraLoi);
-            gridViewDapAn.setAdapter(customDapAn);
-        }
+    public void hienCauHoi(){
+        cauHoi = model.layCauHoi();
+        tvCauHoi.setText(cauHoi.getCauHoi());
+        CauTraLoi=cauHoi.getDapAn();
+        daoCauTraLoi();
+        HienThiDapAn();
+        HienThiCauTraLoi();
+        model.layThongtin();
+        tvTienNguoiDung.setText(model.nguoiDung.tien+"$");
     }
-
-    private String[] setupNullList() {
-        String result[] = new String[da.length];
-        for(int i=0;i<da.length;i++){
-            result[i]=" ";
-        }
-        return result;
-    }
-
-//    public void addView(final LinearLayout linearLayout, final String text,int id) {
-//
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.WRAP_CONTENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT);
-//        layoutParams.rightMargin = 30;
-//        final TextView tvCauTL = new TextView(this);
-//        tvCauTL.setLayoutParams(layoutParams);
-//
-//        tvCauTL.setTextColor(this.getResources().getColor(R.color.trang));
-//        tvCauTL.setGravity(Gravity.CENTER);
-//        tvCauTL.setText(text);
-//        tvCauTL.setHeight(40);
-//
-//        tvCauTL.setBackground(this.getResources().getDrawable(R.color.black));
-//        tvCauTL.setWidth(100);
-//        tvCauTL.setClickable(true);
-//        tvCauTL.setFocusable(true);
-//        tvCauTL.setTextSize(32);
-//        tvCauTL.setId(id);
-//        tvCauTL.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                 CauHoi a= new CauHoi();
-//                addView((LinearLayout) findViewById(R.id.layoutParentctl), tvCauTL.getText().toString(),200);
-//                TextView t=(TextView)findViewById(R.id.100);
-//                cautl = cautl + tvCauTL.getText().toString();
-//                Toast.makeText(VaoChoi.this, cautl, Toast.LENGTH_SHORT).show();
-//                tvCauTL.setText("");
-//                tvCauTL.setEnabled(false);
-//            }
-//        });
-//        linearLayout.addView(tvCauTL);
-//    }
-
     private void Init() {
+        model = new cauHoiModel(this);
+        cauHoi = new CauHoi();
         tvCauHoi = (TextView) findViewById(R.id.tvcauhoi);
-        gridViewDapAn = (GridView)findViewById(R.id.gridViewda);
-        gridViewCauTraLoi = (GridView)findViewById(R.id.gridViewctl);
+        tvTienNguoiDung = (TextView) findViewById(R.id.txttiennguoidung);
+        gvDapAn = (GridView) findViewById(R.id.gridViewdapan);
+        arrDapAn = new ArrayList<>();
+
+        gvCauTraLoi = (GridView) findViewById(R.id.gridViewcautraloi);
+        arrCauTraLoi = new ArrayList<>();
+
+        arrCauHoi= new ArrayList<>();
+
+        btnGoiY=(Button)findViewById(R.id.btngoiy);
+    }
+
+    public void daoCauTraLoi() {
+        pos=0;
+        arrDapAn.clear();
+        arrCauTraLoi.clear();
+        Random r = new Random();
+        for (int i = 0; i < CauTraLoi.length(); i++) {
+            arrDapAn.add("");
+            String s = "" + (char) (r.nextInt(26) + 65);
+            arrCauTraLoi.add(s);
+            String s1 = "" + (char) (r.nextInt(26) + 65);
+            arrCauTraLoi.add(s1);
+
+
+        }
+
+        for (int i = 0; i < CauTraLoi.length(); i++) {
+            String da = "" + CauTraLoi.charAt(i);
+            arrCauTraLoi.set(i, da.toUpperCase());
+        }
+
+        for (int i = 0; i < arrCauTraLoi.size(); i++) {
+            String s = arrCauTraLoi.get(i);
+            int vt = r.nextInt(arrCauTraLoi.size());
+            arrCauTraLoi.set(i, arrCauTraLoi.get(vt));
+            arrCauTraLoi.set(vt, s);
+        }
+    }
+    public void checkDapAn(){
+        String s="";
+        for(String s1 : arrDapAn){
+            s=s+s1;
+        }
+        s.toUpperCase();
+        if(s.equals(CauTraLoi.toUpperCase())){
+            Toast.makeText(VaoChoi.this,"Ban da chien thang",Toast.LENGTH_LONG).show();
+            model.layThongtin();
+            model.nguoiDung.tien=model.nguoiDung.tien+10;
+
+            model.luuThongTin();
+            hienCauHoi();
+        }
+    }
+
+    public void moGoiY(View view) {
+        int index=-1;
+        for(int i=0;i<arrDapAn.size();i++){
+            if(arrDapAn.get(i).length()==0){
+                index=i;
+                break;
+            }
+        }
+        if(index==-1){
+            for(int i=0;i<arrDapAn.size();i++){
+                String s1 = CauTraLoi.charAt(i)+"";
+                if(arrDapAn.get(i).toUpperCase().equals(s1)){
+                    index=i;
+                    break;
+                }
+            }
+
+        }
+        for(int i=0;i<arrCauTraLoi.size();i++){
+            if(arrCauTraLoi.get(i).length()==0){
+                arrCauTraLoi.set(i,arrDapAn.get(index));
+                break;
+            }
+
+        }
+        String s=""+CauTraLoi.charAt(index);
+        s = s.toUpperCase();
+        for(int i =0;i<arrDapAn.size();i++){
+            if(arrDapAn.get(i).toUpperCase().equals(s)){
+                arrDapAn.set(i,"");
+                break;
+            }
+        }
+        for(int i=0;i<arrCauTraLoi.size();i++){
+            if(s.equals(arrCauTraLoi.get(i))){
+                arrCauTraLoi.set(i,"");
+                break;
+            }
+
+        }
+        arrDapAn.set(index,s);
+        HienThiDapAn();
+        HienThiCauTraLoi();
+
     }
 }

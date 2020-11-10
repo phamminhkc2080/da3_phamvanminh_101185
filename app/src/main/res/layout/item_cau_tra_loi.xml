@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvdapan"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="A"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:background="#000000"
+        android:textColor="#FFFFFF"
+        />
+
+
+</LinearLayout>

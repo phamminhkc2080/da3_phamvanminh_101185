@@ -1,8 +1,8 @@
 package com.example.da3_phamvanminh_101185;
 
 public class CauHoi {
-    public int maCH;
-    public String CauHoi,CauTraLoi,DapAn;
+    private int maCH;
+    private String CauHoi,CauTraLoi,DapAn;
 
     public CauHoi() {
     }

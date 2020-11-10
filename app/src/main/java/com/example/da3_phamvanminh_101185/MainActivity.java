@@ -21,6 +21,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 handler.removeCallbacks(this);
             }
-        },2000);
+        },1000);
     }
 }

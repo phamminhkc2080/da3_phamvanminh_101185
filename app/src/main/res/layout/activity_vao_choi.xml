@@ -8,80 +8,98 @@
     android:orientation="vertical"
     tools:context=".VaoChoi">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#594426"
-        android:orientation="horizontal" />
+        android:gravity="center"
+        android:background="#78541F">
 
-    <TextView
-        android:id="@+id/tvcauhoi"
-        android:layout_width="300dp"
+        <TextView
+            android:id="@+id/txttiennguoidung"
+            android:textColor="#000000"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="116dp"
+            android:layout_marginEnd="119dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="10" />
+        <Button
+            android:onClick="moGoiY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goi y"
+            android:id="@+id/btngoiy"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:background="#B6E9EF"
-        android:gravity="center"
-        android:text="cauhoi"
-        android:textSize="20sp" />
+        android:gravity="center">
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutParentctl"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginLeft="24dp"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:layout_marginRight="24dp"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal">-->
+        <TextView
+            android:id="@+id/tvcauhoi"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="#B6E9EF"
+            android:gravity="center"
+            android:text="cauhoi"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
-<!--    </LinearLayout>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutParentda"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginLeft="24dp"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:layout_marginRight="24dp"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal">-->
-
-<!--    </LinearLayout>-->
-    <LinearLayout
-        android:layout_alignParentTop="true"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_above="@+id/btnsubmit"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:minHeight="100dp">
 
         <GridView
-            android:id="@+id/gridViewctl"
+
+
+            android:id="@+id/gridViewdapan"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:padding="4dp"
-            android:horizontalSpacing="4dp"
-            android:verticalSpacing="4dp"
-            android:numColumns="auto_fit"
             android:columnWidth="40dp"
+            android:gravity="center"
+            android:horizontalSpacing="4dp"
+            android:numColumns="5"
+            android:padding="4dp"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:verticalSpacing="4dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <GridView
-            android:id="@+id/gridViewda"
+            android:id="@+id/gridViewcautraloi"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:padding="4dp"
-            android:horizontalSpacing="4dp"
-            android:verticalSpacing="4dp"
-            android:numColumns="auto_fit"
             android:columnWidth="40dp"
+            android:gravity="center"
+            android:horizontalSpacing="4dp"
+            android:numColumns="5"
+            android:padding="4dp"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:verticalSpacing="4dp"
 
 
+            />
+
+    </RelativeLayout>
 </LinearLayout>
